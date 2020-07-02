@@ -27,7 +27,7 @@ class SearchBar extends Component {
           name="search"
           id="search"
           placeholder="Search"
-          onChange={this.handleSearchInput()}
+          onChange={(event) => this.handleSearchInput(event)}
         />
         <div className="search-btn">
           <Link
