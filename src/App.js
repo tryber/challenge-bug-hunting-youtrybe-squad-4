@@ -13,11 +13,11 @@ import InitialPage from './components/content/InitialPage';
 class App extends Component {
   render() {
     return (
-      <Router> 
+      <Router>
         <div className="App">
           <Header />
           <Switch>
-            <Route path="/"><InitialPage /></Route>
+            <Route exact path="/"><InitialPage /></Route>
             <Route
               exact path="/watch/:videoId"
               render={(props) => <VideoPage {...props} />}
