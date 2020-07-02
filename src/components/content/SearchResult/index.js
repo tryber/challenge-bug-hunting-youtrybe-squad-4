@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import VideoCard from './VideoCard/VideoCard';
 import { Link } from 'react-router-dom';
+import VideoCard from './VideoCard/VideoCard';
 
 import '../../../css/sideBar.css';
 import { searchVideos } from '../../../api/service';
@@ -17,19 +17,13 @@ class SearchResult extends Component {
     this.updateData = this.updateData.bind(this);
   }
 
-
   componentDidMount() {
-    const {
-      params: { searchParam },
-    } = this.props.match;
-
+    const { match: { params: { searchParam } } } = this.props;
     this.updateData(searchParam);
   }
 
   componentDidUpdate(nextProps) {
-    const {
-      params: { searchParam },
-    } = this.props.match;
+    const { match: { params: { searchParam } } } = this.props;
 
     if (nextProps.match.params.searchParam !== searchParam) {
       this.updateData(searchParam);
@@ -39,15 +33,16 @@ class SearchResult extends Component {
   updateData(param) {
     searchVideos(param)
       .then((data) => {
+        console.log(data, param);
         this.setState({ data: data.items });
       })
-      .catch((error) => this.setState({ error: error }));
+      .catch((error) => this.setState({ error }));
   }
 
   render() {
-    const { data } = this.state;
-    if (data.length < 1) return <div>Loading...</div>;
-
+    const { data, error } = this.state;
+    if (data.length < 1) return <span>Loading...</span>;
+    if (error) return <span>Página não encontrada</span>;
     return (
       <div>
         {data.map((item) => (
@@ -56,7 +51,7 @@ class SearchResult extends Component {
             key={item.etag}
             to={{
               pathname: `/watch/${item.id.videoId}`,
-              state: { data: data },
+              state: { data },
             }}
           >
             <VideoCard key={item.id.videoId} video={item} />
