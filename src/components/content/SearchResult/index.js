@@ -13,30 +13,54 @@ class SearchResult extends Component {
       data: [],
       error: '',
     };
+
+    this.updateData = this.updateData.bind(this);
   }
+
 
   componentDidMount() {
     const {
       params: { searchParam },
     } = this.props.match;
 
-    searchVideos(searchParam).then((data) => {
-      this.setState({ data: data.items });
-    }).catch(error => this.setState({error: error}))
+    this.updateData(searchParam);
+  }
+
+  componentDidUpdate(nextProps) {
+    const {
+      params: { searchParam },
+    } = this.props.match;
+
+    if (nextProps.match.params.searchParam !== searchParam) {
+      this.updateData(searchParam);
+    }
+  }
+
+  updateData(param) {
+    searchVideos(param)
+      .then((data) => {
+        this.setState({ data: data.items });
+      })
+      .catch((error) => this.setState({ error: error }));
   }
 
   render() {
     const { data } = this.state;
-
-    if (data.length < 1) return (<div>Loading...</div>)
+    if (data.length < 1) return <div>Loading...</div>;
 
     return (
       <div>
         {data.map((item) => (
-          <Link className="thumbnail-card" key={item.etag} to={{
-            pathname: `/watch/${item.id.videoId}`,
-            state: { data: data }
-          }}><VideoCard video={item} /></Link>
+          <Link
+            className="thumbnail-card"
+            key={item.etag}
+            to={{
+              pathname: `/watch/${item.id.videoId}`,
+              state: { data: data },
+            }}
+          >
+            <VideoCard key={item.id.videoId} video={item} />
+          </Link>
         ))}
       </div>
     );

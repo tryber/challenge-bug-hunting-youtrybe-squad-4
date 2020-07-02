@@ -41,11 +41,11 @@ describe('Funcionalidades Componente Search Result', () => {
   it('Renderiza uma lista de videos em cima da busca', async () => {
     renderWithRouter(<SearchResult match={{ params: { searchParam: 'bugs' } }} />);
     await waitFor(() => expect(api.searchVideos).toHaveBeenCalled());
-    expect(screen.getAllByRole('link').length).toBeLessThan(mockSearchVideo.items.length);
+    expect(screen.getAllByRole('link').length).toBe(mockSearchVideo.items.length);
   })
 
   it('Ao clicar em um video redireciona a pagina de display', async () => {
-    const { history } = renderWithRouter(<App />, { route: '/results/bugs' });
+    const { history, container } = renderWithRouter(<App />, { route: '/results/bugs' });
     await waitFor(() => expect(api.searchVideos).toHaveBeenCalled());
 
     const videoLink = screen.getAllByRole('link')[1];
