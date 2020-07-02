@@ -59,7 +59,7 @@ class SearchResult extends Component {
               state: { data: data },
             }}
           >
-            <VideoCard video={item} />
+            <VideoCard key={item.id.videoId} video={item} />
           </Link>
         ))}
       </div>
