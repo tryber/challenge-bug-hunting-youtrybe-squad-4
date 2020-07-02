@@ -21,6 +21,7 @@ class VideoPage extends Component {
     this.handleSelectedVideo = this.handleSelectedVideo.bind(this);
     this.updateVideoId = this.updateVideoId.bind(this);
     this.cancelRedirect = this.cancelRedirect.bind(this);
+    this.getInfoComments = this.getInfoComments.bind(this);
   }
 
   componentDidMount() {
@@ -35,6 +36,15 @@ class VideoPage extends Component {
     }
   }
 
+  getInfoComments(videoId) {
+    getVideoInfo(videoId).then((data) => {
+      this.setState({ videoInfo: data.items[0] });
+    });
+    getVideoComments(videoId).then((data) => {
+      this.setState({ videoComments: data.items });
+    });
+  }
+
   cancelRedirect() {
     const { redirect } = this.state;
     if (redirect) return this.setState({ redirect: false });
@@ -42,29 +52,14 @@ class VideoPage extends Component {
   }
 
   updateVideoId() {
-    const {
-      match: {
-        params: { videoId },
-      },
-    } = this.props;
-    getVideoInfo(videoId).then((data) => {
-      this.setState({ videoInfo: data.items[0] });
-    });
-    getVideoComments(videoId).then((data) => {
-      this.setState({ videoComments: data.items });
-    });
+    const { match: { params: { videoId } } } = this.props;
+    this.getInfoComments(videoId);
   }
 
   handleSelectedVideo(videoIdParam) {
     const { videoId } = this.state;
     this.setState({ videoId: videoIdParam });
-    getVideoInfo(videoId).then((data) => {
-      this.setState({ videoInfo: data.items[0] });
-    });
-
-    getVideoComments(videoId).then((data) => {
-      this.setState({ videoComments: data.items });
-    });
+    this.getInfoComments(videoId);
     this.setState({ redirect: true, selected: videoIdParam });
   }
 
@@ -72,23 +67,13 @@ class VideoPage extends Component {
     const { videoInfo, videoComments, redirect, selected, relatedVideos, videoId } = this.state;
     if (!videoInfo || !videoComments) return <main />;
     if (redirect) {
-      return (
-        <Redirect
-          to={{
-            pathname: `/watch/${selected}`,
-            state: { data: relatedVideos },
-          }}
-        />
-      );
+      return <Redirect to={{ pathname: `/watch/${selected}`, state: { data: relatedVideos } }} />
     }
     return (
       <main>
         <section className="player">
           <VideoPlayer embedId={videoId} />
-          <VideoPlayerInfo
-            statisticsInfo={videoInfo.statistics}
-            title={videoInfo.snippet.title}
-          />
+          <VideoPlayerInfo statisticsInfo={videoInfo.statistics} title={videoInfo.snippet.title} />
           <VideoPlayerDescription
             channelTitle={videoInfo.snippet.channelTitle}
             description={videoInfo.snippet.description}
