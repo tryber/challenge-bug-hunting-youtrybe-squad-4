@@ -45,7 +45,7 @@ describe('Funcionalidades Componente Search Result', () => {
   })
 
   it('Ao clicar em um video redireciona a pagina de display', async () => {
-    const { history } = renderWithRouter(<App />, { route: '/results/bugs' });
+    const { history, container } = renderWithRouter(<App />, { route: '/results/bugs' });
     await waitFor(() => expect(api.searchVideos).toHaveBeenCalled());
 
     const videoLink = screen.getAllByRole('link')[1];

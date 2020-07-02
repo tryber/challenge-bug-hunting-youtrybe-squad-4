@@ -4,11 +4,11 @@ const enviromentVariable = path.resolve(__dirname, '..', '..', '.env');
 require('dotenv').config({ path: enviromentVariable }); 
 
 let YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3';
-const YOUTUBE_AUTH_KEY = process.env.REACT_APP_KEY;
+const YOUTUBE_AUTH_KEY = 'AIzaSyDBuOTCfHPhoq3NvmssqQfP5EdxaSf4bOU';//process.env.REACT_APP_KEY;
 
 console.log(YOUTUBE_AUTH_KEY)
 export const searchVideos = async (searchText) => {
-  const URL = `${YOUTUBE_API_URL}/search?part=snippet&q=${searchText}&maxResults=25&key=${'AIzaSyDBuOTCfHPhoq3NvmssqQfP5EdxaSf4bOU'}`;
+  const URL = `${YOUTUBE_API_URL}/search?part=snippet&q=${searchText}&maxResults=25&key=${YOUTUBE_AUTH_KEY}`;
 
   try {
     const response = await fetch(URL);
@@ -29,28 +29,30 @@ export const searchVideos = async (searchText) => {
   // })
 };
 
-export const getVideoInfo = (videoId) => {
+export const getVideoInfo = async (videoId) => {
   const urlParams = `part=snippet%2CcontentDetails%2Cstatistics&id=${videoId}&key=${YOUTUBE_AUTH_KEY}`;
   const URL = `${YOUTUBE_API_URL}/videos?${urlParams}`;
 
-  return new Promise((resolve, reject) => {
-    resolve(
-      fetch(URL)
-        .then((data) => data)
-        .catch(error => reject(error))
-    );
-  })
+  try {
+    const response = await fetch(URL);
+    const result = await response.json();
+    
+    return result;
+  } catch (error) {
+    return error;
+  }
 };
 
-export const getVideoComments = (videoId) => {
+export const getVideoComments = async (videoId) => {
   const urlParams = `part=snippet&videoId=${videoId}&textFormat=plainText&key=${YOUTUBE_AUTH_KEY}`;
   const URL = `${YOUTUBE_API_URL}/commentThreads?${urlParams}`;
 
-  return new Promise((resolve, reject) => {
-    resolve(
-      fetch(URL)
-        .then((data) => data)
-        .catch(error => reject(error))
-    );
-  })
+  try {
+    const response = await fetch(URL);
+    const result = await response.json();
+    
+    return result;
+  } catch (error) {
+    return error;
+  }
 };
