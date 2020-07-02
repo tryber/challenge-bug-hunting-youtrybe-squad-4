@@ -1,10 +1,11 @@
 const path = require('path');
+
 const enviromentVariable = path.resolve(__dirname, '..', '..', '.env');
 
-require('dotenv').config({ path: enviromentVariable }); 
+require('dotenv').config({ path: enviromentVariable });
 
 let YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3';
-const YOUTUBE_AUTH_KEY = 'AIzaSyDBuOTCfHPhoq3NvmssqQfP5EdxaSf4bOU';//process.env.REACT_APP_KEY;
+const YOUTUBE_AUTH_KEY = 'AIzaSyDBuOTCfHPhoq3NvmssqQfP5EdxaSf4bOU';
 
 console.log(YOUTUBE_AUTH_KEY)
 export const searchVideos = async (searchText) => {
@@ -13,20 +14,11 @@ export const searchVideos = async (searchText) => {
   try {
     const response = await fetch(URL);
     const result = await response.json();
-    
+
     return result;
   } catch (error) {
     return error;
   }
-
-
-  // return new Promise((resolve, reject) => {
-  //   resolve(
-  //     fetch(URL)
-  //       .then((data) => data)
-  //       .catch(error => reject(error))
-  //   );
-  // })
 };
 
 export const getVideoInfo = async (videoId) => {
@@ -36,7 +28,7 @@ export const getVideoInfo = async (videoId) => {
   try {
     const response = await fetch(URL);
     const result = await response.json();
-    
+
     return result;
   } catch (error) {
     return error;
@@ -50,7 +42,7 @@ export const getVideoComments = async (videoId) => {
   try {
     const response = await fetch(URL);
     const result = await response.json();
-    
+
     return result;
   } catch (error) {
     return error;

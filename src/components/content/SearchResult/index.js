@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import VideoCard from "./VideoCard/VideoCard";
-import { Link } from "react-router-dom";
+import React, { Component } from 'react';
+import VideoCard from './VideoCard/VideoCard';
+import { Link } from 'react-router-dom';
 
-import "../../../css/sideBar.css";
-import { searchVideos } from "../../../api/service";
+import '../../../css/sideBar.css';
+import { searchVideos } from '../../../api/service';
 
 class SearchResult extends Component {
   constructor(props) {
@@ -11,22 +11,14 @@ class SearchResult extends Component {
 
     this.state = {
       data: [],
-      error: "",
+      error: '',
     };
 
     this.updateData = this.updateData.bind(this);
   }
 
-  updateData(param) {
-    searchVideos(param)
-      .then((data) => {
-        this.setState({ data: data.items });
-      })
-      .catch((error) => this.setState({ error: error }));
-  }
 
   componentDidMount() {
-    console.log()
     const {
       params: { searchParam },
     } = this.props.match;
@@ -35,13 +27,21 @@ class SearchResult extends Component {
   }
 
   componentDidUpdate(nextProps) {
-      const {
-        params: { searchParam },
-      } = this.props.match;
+    const {
+      params: { searchParam },
+    } = this.props.match;
 
     if (nextProps.match.params.searchParam !== searchParam) {
       this.updateData(searchParam);
     }
+  }
+
+  updateData(param) {
+    searchVideos(param)
+      .then((data) => {
+        this.setState({ data: data.items });
+      })
+      .catch((error) => this.setState({ error: error }));
   }
 
   render() {
