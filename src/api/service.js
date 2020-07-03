@@ -16,7 +16,7 @@ export const searchVideos = async (searchText) => {
 
     return result;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -29,7 +29,7 @@ export const getVideoInfo = async (videoId) => {
     const result = await response.json();
     return result;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -42,6 +42,6 @@ export const getVideoComments = async (videoId) => {
     const result = await response.json();
     return result;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
