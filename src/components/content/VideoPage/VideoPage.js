@@ -25,12 +25,14 @@ class VideoPage extends Component {
   }
 
   componentDidMount() {
-    this.updateVideoId();
+    const { match: { params: { videoId } } } = this.props;
+    this.getInfoComments(videoId);
   }
 
   componentDidUpdate(prevProps, prevState) {
     const { videoId } = this.state;
     this.cancelRedirect();
+    console.log(videoId, prevState.videoId)
     if (prevState.videoId !== videoId) {
       this.updateVideoId();
     }
@@ -52,21 +54,21 @@ class VideoPage extends Component {
   }
 
   updateVideoId() {
-    const { match: { params: { videoId } } } = this.props;
+    const { videoId } = this.state;
     this.getInfoComments(videoId);
   }
 
   handleSelectedVideo(videoIdParam) {
-    const { videoId } = this.state;
-    this.setState({ videoId: videoIdParam });
-    this.getInfoComments(videoId);
-    this.setState({ redirect: true, selected: videoIdParam });
+    console.log('id clicado:', videoIdParam)
+    this.setState({ redirect: true, selected: videoIdParam, videoId: videoIdParam });
   }
 
   render() {
+    console.log(this.state)
     const { videoInfo, videoComments, redirect, selected, relatedVideos, videoId } = this.state;
     if (!videoInfo || !videoComments) return <main />;
     if (redirect) {
+      console.log('passou aqui', videoId)
       return <Redirect to={{ pathname: `/watch/${selected}`, state: { data: relatedVideos } }} />
     }
     return (
