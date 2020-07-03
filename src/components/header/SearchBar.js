@@ -25,10 +25,12 @@ class SearchBar extends Component {
           name="search"
           id="search"
           placeholder="Search"
+          data-testid="input-search"
           onChange={(event) => this.handleSearchInput(event)}
         />
         <div className="search-btn">
           <Link
+            data-testid="search-button"
             className="material-icons search-icon"
             to={`/results/${searchInput}`}
           >

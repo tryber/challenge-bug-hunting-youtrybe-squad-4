@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import VideoCard from './VideoCard/VideoCard';
 
 import '../../../css/sideBar.css';
@@ -11,7 +11,7 @@ class SearchResult extends Component {
 
     this.state = {
       data: [],
-      error: '',
+      error: false,
     };
 
     this.updateData = this.updateData.bind(this);
@@ -33,16 +33,15 @@ class SearchResult extends Component {
   updateData(param) {
     searchVideos(param)
       .then((data) => {
-        console.log(data, param);
         this.setState({ data: data.items });
       })
-      .catch((error) => this.setState({ error }));
+      .catch(() => this.setState({ error: true }));
   }
 
   render() {
     const { data, error } = this.state;
+    if (error) return <Redirect to="/404" />;
     if (data.length < 1) return <span>Loading...</span>;
-    if (error) return <span>Página não encontrada</span>;
     return (
       <div>
         {data.map((item) => (
