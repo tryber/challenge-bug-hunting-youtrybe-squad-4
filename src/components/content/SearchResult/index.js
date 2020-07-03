@@ -10,7 +10,7 @@ class SearchResult extends Component {
     super(props);
 
     this.state = {
-      data: [],
+      data: null,
       error: false,
     };
 
@@ -41,7 +41,7 @@ class SearchResult extends Component {
   render() {
     const { data, error } = this.state;
     if (error) return <Redirect to="/404" />;
-    if (data.length < 1) return <span>Loading...</span>;
+    if (!data) return <span>Loading...</span>;
     return (
       <div>
         {data.map((item) => (
