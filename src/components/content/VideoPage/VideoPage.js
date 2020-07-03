@@ -59,7 +59,6 @@ class VideoPage extends Component {
   }
 
   handleSelectedVideo(videoIdParam) {
-    console.log('id clicado:', videoIdParam)
     this.setState({ redirect: true, selected: videoIdParam, videoId: videoIdParam });
   }
 
@@ -68,7 +67,6 @@ class VideoPage extends Component {
     const { videoInfo, videoComments, redirect, selected, relatedVideos, videoId } = this.state;
     if (!videoInfo || !videoComments) return <main />;
     if (redirect) {
-      console.log('passou aqui', videoId)
       return <Redirect to={{ pathname: `/watch/${selected}`, state: { data: relatedVideos } }} />
     }
     return (

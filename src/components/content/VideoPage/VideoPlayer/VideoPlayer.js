@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactPlayer from 'react-player';
-import { saveItem, addItem } from '../../../../service/localStorage';
+import { addItem } from '../../../../service/localStorage';
 import '../../../../css/chanelInfo.css';
 
 class VideoPlayer extends Component {
