@@ -40,7 +40,7 @@ class SearchResult extends Component {
 
   render() {
     const { data, error } = this.state;
-    if (error) return <Redirect to="/404" />
+    if (error) return <Redirect to="/404" />;
     if (data.length < 1) return <span>Loading...</span>;
     return (
       <div>
