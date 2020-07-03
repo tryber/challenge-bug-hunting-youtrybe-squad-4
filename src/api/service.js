@@ -4,10 +4,9 @@ const enviromentVariable = path.resolve(__dirname, '..', '..', '.env');
 
 require('dotenv').config({ path: enviromentVariable });
 
-let YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3';
+const YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3';
 const YOUTUBE_AUTH_KEY = 'AIzaSyDBuOTCfHPhoq3NvmssqQfP5EdxaSf4bOU';
 
-console.log(YOUTUBE_AUTH_KEY)
 export const searchVideos = async (searchText) => {
   const URL = `${YOUTUBE_API_URL}/search?part=snippet&q=${searchText}&maxResults=25&key=${YOUTUBE_AUTH_KEY}`;
 
@@ -15,6 +14,7 @@ export const searchVideos = async (searchText) => {
     const response = await fetch(URL);
     const result = await response.json();
 
+    console.log(result, 'serchvideos', URL);
     return result;
   } catch (error) {
     return error;
@@ -28,7 +28,6 @@ export const getVideoInfo = async (videoId) => {
   try {
     const response = await fetch(URL);
     const result = await response.json();
-
     return result;
   } catch (error) {
     return error;
@@ -42,7 +41,6 @@ export const getVideoComments = async (videoId) => {
   try {
     const response = await fetch(URL);
     const result = await response.json();
-
     return result;
   } catch (error) {
     return error;
