@@ -28,4 +28,4 @@ module.exports = {
   getItem,
   addItem,
   removeItem,
-}
+};
