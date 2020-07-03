@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, getByRole, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, getByRole, waitFor, cleanup, getByText } from '@testing-library/react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import SearchResult from '../components/content/SearchResult/index';
@@ -21,9 +21,11 @@ jest.mock('../api/service');
 api.searchVideos.mockImplementation(
   () => Promise.resolve(mockSearchVideo)
 );
+
 api.getVideoInfo.mockImplementation(
   () => Promise.resolve(mockGetVideoInfo)
 );
+
 api.getVideoComments.mockImplementation(
   () => Promise.resolve(mockGetVideoComments)
 );
@@ -54,7 +56,30 @@ describe('Funcionalidades Componente Search Result', () => {
 
     await waitFor(() => expect(api.getVideoInfo).toHaveBeenCalled());
     await waitFor(() => expect(api.getVideoComments).toHaveBeenCalled());
-  
+
     expect(screen.getByTestId('videoplayer')).toBeInTheDocument();
+  })
+
+  it('Testando quando o usuario muda a pesquisa, se o componente é atualizada com a nova pesquisa', async () => {
+    const { getByTestId } = renderWithRouter(<App />, { route: '/results/bugs' });
+    await waitFor(() => expect(api.searchVideos).toHaveBeenCalled());
+    await waitFor(() => expect(api.searchVideos).toHaveBeenCalledTimes(3));
+    const inputSearch = getByTestId('input-search');
+
+    fireEvent.change(inputSearch, { target: { value: 'test' } });
+    const buttonSearch = getByTestId('search-button');
+    fireEvent.click(buttonSearch);
+    await waitFor(() => expect(api.searchVideos).toHaveBeenCalledTimes(4));
+  })
+
+
+  it('Testando quando o usuario muda a pesquisa, se o componente é atualizada com a nova pesquisa', async () => {
+    api.searchVideos.mockImplementation(
+      () => Promise.reject()
+    );
+    const { getByText } = renderWithRouter(<App />, { route: '/results/bugs' });
+    await waitFor(() => expect(api.searchVideos).toHaveBeenCalled());
+    const buttonSearch = getByText(/Página não encontrada/i);
+    expect(buttonSearch).toBeInTheDocument();
   })
 })

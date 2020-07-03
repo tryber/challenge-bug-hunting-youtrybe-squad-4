@@ -12,7 +12,7 @@ class VideoPage extends Component {
     super(props);
     this.state = {
       videoId: props.match.params.videoId,
-      relatedVideos: props.location.state.data || null,
+      relatedVideos: props.location.state.data,
       videoInfo: null,
       videoComments: null,
       redirect: false,

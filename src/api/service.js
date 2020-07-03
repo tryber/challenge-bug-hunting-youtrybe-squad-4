@@ -14,7 +14,6 @@ export const searchVideos = async (searchText) => {
     const response = await fetch(URL);
     const result = await response.json();
 
-    console.log(result, 'serchvideos', URL);
     return result;
   } catch (error) {
     return error;
