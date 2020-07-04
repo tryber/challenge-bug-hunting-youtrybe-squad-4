@@ -17,16 +17,14 @@ class VideoLike extends Component {
 
   componentDidMount() {
     const { videoId } = this.props;
-    const videosLike = getItem('videosLike', videoId);
+    const likeOrDislike = getItem('videosLike', videoId)
+      .find((video) => video.id === videoId);
 
-    if (videosLike) {
-      const likeOrDislike = videosLike.find((video) => video.id === videoId);
-      if (likeOrDislike) {
-        if (likeOrDislike.like) {
-          this.handleVideoLike('like');
-        } else if (likeOrDislike.Dislike) {
-          this.handleVideoLike('dislike');
-        }
+    if (likeOrDislike) {
+      if (likeOrDislike.like) {
+        this.handleVideoLike();
+      } else {
+        this.handleVideoDislike();
       }
     }
   }
@@ -78,7 +76,7 @@ class VideoLike extends Component {
           className="thumb-up-btn"
           onClick={() => this.handleVideoLike()}
         >
-          <i className={`material-icons ${isLiked && "thumb-selected"}`}>
+          <i className={`material-icons ${isLiked && 'thumb-selected'}`}>
             thumb_up
           </i>
           <span className="thumbs-count">{likeCount}</span>
@@ -88,7 +86,7 @@ class VideoLike extends Component {
           className="thumb-down-btn"
           onClick={() => this.handleVideoDislike()}
         >
-          <i className={`material-icons ${isDisliked && "thumb-selected"}`}>
+          <i className={`material-icons ${isDisliked && 'thumb-selected'}`}>
             thumb_down
           </i>
           <span className="thumbs-count">{dislikeCount}</span>
