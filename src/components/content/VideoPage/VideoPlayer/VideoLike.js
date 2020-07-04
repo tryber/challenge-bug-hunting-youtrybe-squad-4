@@ -1,32 +1,65 @@
-import React, { Component } from "react";
-import { addItem, removeItem } from "../../../../service/localStorage";
+import React, { Component } from 'react';
+import { getItem, addItem, removeItem } from '../../../../service/localStorage';
 
 class VideoLike extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { isLiked: null, isDesliked: null };
+    this.state = { 
+      isLiked: null, 
+      likeCount: Number(props.statistics.likeCount), 
+      isDisliked: null,
+      dislikeCount: Number(props.statistics.dislikeCount),
+    };
+
+    this.handleVideoLike = this.handleVideoLike.bind(this);
+  }
+
+  componentDidMount() {
+    const { videoId } = this.props;
+    const videosLike = getItem('videosLike', videoId);
+
+    if (videosLike) {
+      const likeOrDislike = videosLike.find((video) => video.id === videoId);
+      if (likeOrDislike) {
+        if (likeOrDislike.like) {
+          this.handleVideoLike('like');
+        } else if (likeOrDislike.Dislike) {
+          this.handleVideoLike('dislike');
+        }
+      }
+    }
   }
 
   handleVideoLike(action) {
-    const { videoId } = this.props;
-    const { isLiked, isDesliked } = this.state;
+    const { videoId, statistics } = this.props;
+    const { isLiked, isDisliked } = this.state;
+    const originalLikes = Number(statistics.likeCount);
+    const originalDislikes = Number(statistics.dislikeCount)
 
     switch (action) {
-      case "like":
-        this.setState({ isLiked: !isLiked, isDesliked: false }, () => {
-          removeItem("videosLike", { id: videoId });
+      case 'like':
+        this.setState({ isLiked: !isLiked, isDisliked: false }, () => {
+          removeItem('videosLike', { id: videoId });
           if (!isLiked) {
-            addItem("videosLike", { id: videoId, like: true });
+            addItem('videosLike', { id: videoId, like: true });
+            return this.setState(
+              { likeCount: originalLikes + 1, dislikeCount: originalDislikes },
+            )
           }
+          this.setState({likeCount: originalLikes});
         });
         break;
-      case "deslike":
-        this.setState({ isLiked: false, isDesliked: !isDesliked }, () => {
-          removeItem("videosLike", { id: videoId });
-          if (!isDesliked) {
-            addItem("videosLike", { id: videoId, deslike: true });
+      case 'dislike':
+        this.setState({ isLiked: false, isDisliked: !isDisliked }, () => {
+          removeItem('videosLike', { id: videoId });
+          if (!isDisliked) {
+            addItem('videosLike', { id: videoId, Dislike: true });
+            return this.setState(
+              { likeCount: originalLikes, dislikeCount: originalDislikes + 1 },
+            )
           }
+          this.setState({ dislikeCount: originalDislikes });
         });
         break;
       default:
@@ -35,29 +68,28 @@ class VideoLike extends Component {
   }
 
   render() {
-    const { statistics } = this.props;
-    const { isLiked, isDesliked } = this.state;
+    const { isLiked, likeCount, isDisliked, dislikeCount } = this.state;
 
     return (
-      <div className="thumb-wrapper">
+      <div className='thumb-wrapper'>
         <a
-          className="thumb-up-btn"
-          onClick={() => this.handleVideoLike("like")}
+          className='thumb-up-btn'
+          onClick={() => this.handleVideoLike('like')}
         >
           <i className={`material-icons ${isLiked && 'thumb-selected'}`}>
             thumb_up
           </i>
-          <span className="thumbs-count">{statistics.likeCount}</span>
+          <span className='thumbs-count'>{likeCount}</span>
         </a>
 
         <a
-          className="thumb-down-btn"
-          onClick={() => this.handleVideoLike("deslike")}
+          className='thumb-down-btn'
+          onClick={() => this.handleVideoLike('dislike')}
         >
-          <i className={`material-icons ${isDesliked && 'thumb-selected'}`}>
+          <i className={`material-icons ${isDisliked && 'thumb-selected'}`}>
             thumb_down
           </i>
-          <span className="thumbs-count">{statistics.dislikeCount}</span>
+          <span className='thumbs-count'>{dislikeCount}</span>
         </a>
       </div>
     );
