@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-
+import ReactPlayer from 'react-player';
+import { addItem } from '../../../../service/localStorage';
 import '../../../../css/chanelInfo.css';
 
 class VideoPlayer extends Component {
@@ -8,8 +9,7 @@ class VideoPlayer extends Component {
     const playerURL = `https://www.youtube.com/embed/${embedId}`;
     return (
       <div className="youtube-player">
-        <iframe width="100%" height="470" src={playerURL} frameBorder="0" data-testid="videoplayer"
-          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+        <ReactPlayer url={playerURL} width="100%" height="470px" onStart={() => addItem('watch', { id: embedId })} />
       </div>
     );
   }

@@ -5,7 +5,7 @@ const enviromentVariable = path.resolve(__dirname, '..', '..', '.env');
 require('dotenv').config({ path: enviromentVariable });
 
 const YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3';
-const YOUTUBE_AUTH_KEY = 'AIzaSyDBuOTCfHPhoq3NvmssqQfP5EdxaSf4bOU';
+const YOUTUBE_AUTH_KEY = 'AIzaSyDztQJzpfZ5gg53oXV3MDD1zsJlI39LOpI';
 
 export const searchVideos = async (searchText) => {
   const URL = `${YOUTUBE_API_URL}/search?part=snippet&q=${searchText}&maxResults=25&key=${YOUTUBE_AUTH_KEY}`;
