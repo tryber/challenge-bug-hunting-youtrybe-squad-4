@@ -46,7 +46,7 @@ class VideoLike extends Component {
           dislikeCount: originalDislikes,
         });
       }
-      this.setState({ likeCount: originalLikes });
+      return this.setState({ likeCount: originalLikes });
     });
   }
 
@@ -65,7 +65,7 @@ class VideoLike extends Component {
           dislikeCount: originalDislikes + 1,
         });
       }
-      this.setState({ dislikeCount: originalDislikes });
+      return this.setState({ dislikeCount: originalDislikes });
     });
   }
 
@@ -73,25 +73,25 @@ class VideoLike extends Component {
     const { isLiked, likeCount, isDisliked, dislikeCount } = this.state;
 
     return (
-      <div className='thumb-wrapper'>
+      <div className="thumb-wrapper">
         <a
-          className='thumb-up-btn'
+          className="thumb-up-btn"
           onClick={() => this.handleVideoLike()}
         >
-          <i className={`material-icons ${isLiked && 'thumb-selected'}`}>
+          <i className={`material-icons ${isLiked && "thumb-selected"}`}>
             thumb_up
           </i>
-          <span className='thumbs-count'>{likeCount}</span>
+          <span className="thumbs-count">{likeCount}</span>
         </a>
 
         <a
-          className='thumb-down-btn'
+          className="thumb-down-btn"
           onClick={() => this.handleVideoDislike()}
         >
-          <i className={`material-icons ${isDisliked && 'thumb-selected'}`}>
+          <i className={`material-icons ${isDisliked && "thumb-selected"}`}>
             thumb_down
           </i>
-          <span className='thumbs-count'>{dislikeCount}</span>
+          <span className="thumbs-count">{dislikeCount}</span>
         </a>
       </div>
     );
