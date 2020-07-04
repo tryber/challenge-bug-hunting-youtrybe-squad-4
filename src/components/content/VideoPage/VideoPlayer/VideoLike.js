@@ -17,14 +17,17 @@ class VideoLike extends Component {
 
   componentDidMount() {
     const { videoId } = this.props;
-    const likeOrDislike = getItem('videosLike', videoId)
-      .find((video) => video.id === videoId);
-
-    if (likeOrDislike) {
-      if (likeOrDislike.like) {
-        this.handleVideoLike();
-      } else {
-        this.handleVideoDislike();
+    const videosLike = getItem('videosLike', videoId)
+      
+    if(videosLike) {
+      const likeOrDislike = videosLike.find((video) => video.id === videoId);
+      
+      if (likeOrDislike) {
+        if (likeOrDislike.like) {
+          this.handleVideoLike();
+        } else {
+          this.handleVideoDislike();
+        }
       }
     }
   }
