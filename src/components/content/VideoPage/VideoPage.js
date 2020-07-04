@@ -22,6 +22,7 @@ class VideoPage extends Component {
     this.updateVideoId = this.updateVideoId.bind(this);
     this.cancelRedirect = this.cancelRedirect.bind(this);
     this.getInfoComments = this.getInfoComments.bind(this);
+    this.generateSideBar = this.generateSideBar.bind(this);
   }
 
   componentDidMount() {
@@ -62,18 +63,31 @@ class VideoPage extends Component {
     this.setState({ redirect: true, selected: videoIdParam, videoId: videoIdParam });
   }
 
+  generateSideBar() {
+    const { relatedVideos } = this.state;
+
+    return (
+      <section className="sidebar">
+        <VideoSideBar
+          relatedVideos={relatedVideos}
+          handleSelectedVideo={this.handleSelectedVideo}
+        />
+      </section>
+    );
+  }
+
   render() {
     console.log(this.state)
     const { videoInfo, videoComments, redirect, selected, relatedVideos, videoId } = this.state;
     if (!videoInfo || !videoComments) return <main />;
     if (redirect) {
-      return <Redirect to={{ pathname: `/watch/${selected}`, state: { data: relatedVideos } }} />
+      return <Redirect to={{ pathname: `/watch/${selected}`, state: { data: relatedVideos } }} />;
     }
     return (
       <main>
         <section className="player">
           <VideoPlayer embedId={videoId} />
-          <VideoPlayerInfo statisticsInfo={videoInfo.statistics} title={videoInfo.snippet.title} />
+          <VideoPlayerInfo statisticsInfo={videoInfo.statistics} id={videoId} title={videoInfo.snippet.title} />
           <VideoPlayerDescription
             channelTitle={videoInfo.snippet.channelTitle}
             description={videoInfo.snippet.description}
@@ -84,12 +98,7 @@ class VideoPage extends Component {
             videoComments={videoComments}
           />
         </section>
-        <section className="sidebar">
-          <VideoSideBar
-            relatedVideos={relatedVideos}
-            handleSelectedVideo={this.handleSelectedVideo}
-          />
-        </section>
+        {this.generateSideBar()}
       </main>
     );
   }
