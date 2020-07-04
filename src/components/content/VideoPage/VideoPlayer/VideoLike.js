@@ -23,7 +23,7 @@ class VideoLike extends Component {
         break;
       case "deslike":
         this.setState({ isLiked: false, isDesliked: !isDesliked }, () => {
-          removeItem("videosLike", { id: videoId })
+          removeItem("videosLike", { id: videoId });
           if (!isDesliked) {
             addItem("videosLike", { id: videoId, deslike: true });
           }
@@ -41,18 +41,22 @@ class VideoLike extends Component {
     return (
       <div className="thumb-wrapper">
         <a
-          className={`thumb-up-btn ${isLiked && "liked"}`}
+          className="thumb-up-btn"
           onClick={() => this.handleVideoLike("like")}
         >
-          <i className="material-icons">thumb_up</i>
+          <i className={`material-icons ${isLiked && 'thumb-selected'}`}>
+            thumb_up
+          </i>
           <span className="thumbs-count">{statistics.likeCount}</span>
         </a>
 
         <a
-          className={`thumb-down-btn ${isDesliked && "desliked"}`}
+          className="thumb-down-btn"
           onClick={() => this.handleVideoLike("deslike")}
         >
-          <i className="material-icons">thumb_down</i>
+          <i className={`material-icons ${isDesliked && 'thumb-selected'}`}>
+            thumb_down
+          </i>
           <span className="thumbs-count">{statistics.dislikeCount}</span>
         </a>
       </div>
