@@ -53,11 +53,7 @@ class VideoPage extends Component {
   }
 
   updateVideoId() {
-    const {
-      match: {
-        params: { videoId },
-      },
-    } = this.props;
+    const { match: { params: { videoId } } } = this.props;
     this.getInfoComments(videoId);
   }
 
@@ -91,7 +87,11 @@ class VideoPage extends Component {
       <main>
         <section className="player">
           <VideoPlayer embedId={videoId} />
-          <VideoPlayerInfo statisticsInfo={videoInfo.statistics} id={videoId} title={videoInfo.snippet.title} />
+          <VideoPlayerInfo
+            statisticsInfo={videoInfo.statistics}
+            id={videoId}
+            title={videoInfo.snippet.title}
+          />
           <VideoPlayerDescription
             channelTitle={videoInfo.snippet.channelTitle}
             description={videoInfo.snippet.description}
